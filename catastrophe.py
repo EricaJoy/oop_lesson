@@ -4,6 +4,7 @@ from pyglet.window import key
 from core import GameElement
 import sys
 import random
+import ast
 
 
 
@@ -33,14 +34,105 @@ class Ralf(GameElement):
     SOLID = False
 ####   End class definitions    ####
 
-def run_level():
+def keyboard_handler():
+    answer = ""
+    if KEYBOARD[key.A]:
+        GAME_BOARD.draw_msg("a")
+        answer = answer + "a"
+    if KEYBOARD[key.B]:
+        GAME_BOARD.draw_msg("b")
+        answer = answer + "b"
+    if KEYBOARD[key.C]:
+        GAME_BOARD.draw_msg("c")
+        answer = answer + "c"
+    if KEYBOARD[key.D]:
+        GAME_BOARD.draw_msg("d")
+        answer = answer + "d"
+    if KEYBOARD[key.E]:
+        GAME_BOARD.draw_msg("e")
+        answer = answer + "e"
+    if KEYBOARD[key.F]:
+        GAME_BOARD.draw_msg("f")
+        answer = answer + "f"
+    if KEYBOARD[key.G]:
+        GAME_BOARD.draw_msg("g")
+        answer = answer + "g"
+    if KEYBOARD[key.H]:
+        GAME_BOARD.draw_msg("h")
+        answer = answer + "h"
+    if KEYBOARD[key.I]:
+        GAME_BOARD.draw_msg("i")
+        answer = answer + "i"
+    if KEYBOARD[key.J]:
+        GAME_BOARD.draw_msg("j")
+        answer = answer + "j"
+    if KEYBOARD[key.K]:
+        GAME_BOARD.draw_msg("k")
+        answer = answer + "k"
+    if KEYBOARD[key.L]:
+        GAME_BOARD.draw_msg("l")
+        answer = answer + "l"
+    if KEYBOARD[key.M]:
+        GAME_BOARD.draw_msg("m")
+        answer = answer + "m"
+    if KEYBOARD[key.N]:
+        GAME_BOARD.draw_msg("n")
+        answer = answer + "n"
+    if KEYBOARD[key.O]:
+        GAME_BOARD.draw_msg("o")
+        answer = answer + "o"
+    if KEYBOARD[key.P]:
+        GAME_BOARD.draw_msg("p")
+        answer = answer + "p"
+    if KEYBOARD[key.Q]:
+        GAME_BOARD.draw_msg("q")
+        answer = answer + "q"
+    if KEYBOARD[key.R]:
+        GAME_BOARD.draw_msg("r")
+        answer = answer + "r"
+    if KEYBOARD[key.S]:
+        GAME_BOARD.draw_msg("s")
+        answer = answer + "s"
+    if KEYBOARD[key.T]:
+        GAME_BOARD.draw_msg("t")
+        answer = answer + "t"
+    if KEYBOARD[key.U]:
+        GAME_BOARD.draw_msg("u")
+        answer = answer + "u"
+    if KEYBOARD[key.V]:
+        GAME_BOARD.draw_msg("v")
+        answer = answer + "v"
+    if KEYBOARD[key.W]:
+        GAME_BOARD.draw_msg("w")
+        answer = answer + "w"
+    if KEYBOARD[key.X]:
+        GAME_BOARD.draw_msg("x")
+        answer = answer + "x"
+    if KEYBOARD[key.Y]:
+        GAME_BOARD.draw_msg("y")
+        answer = answer + "y"
+    if KEYBOARD[key.Z]:
+        GAME_BOARD.draw_msg("z")
+        answer = answer + "z"
+    if KEYBOARD[key.BACKSPACE]:
+        GAME_BOARD.backspace()
+    if KEYBOARD[key.ENTER]:
+        check_answer()
+
+def check_answer():
+    pass
+
+def run_level(current_question):
     #Gets all the cats and the one ralf, on the board
     #directs them to move to random coordinates on the board
     #if they happen to pick the same coordinates, it's ok
     #they just overlap, no big deal. 
     #CAT = [] ##think about throwing this in a list later to make it cleaner
     cats = [Cat(), Cat(), Cat(), Cat(), Cat(), Cat(), Cat(), Cat(), Cat(), Cat()]
+    chomp = pyglet.resource.media('hit.wav', streaming=False)
 
+
+    GAME_BOARD.draw_msg(current_question +"\n >")    
 
 
 
@@ -64,11 +156,11 @@ def run_level():
         i = 0
         for cat in cats:
             if RALF.x == cat.x and RALF.y == cat.y:
-                GAME_BOARD.draw_msg("CHOMP!")
+                chomp.play()
                 del cats[i]
             else: 
                 GAME_BOARD.del_el(cat.x, cat.y)
-                GAME_BOARD.erase_msg()
+                
             i += 1
 
 
@@ -98,7 +190,29 @@ def initialize():
     # GAME_BOARD.register(PLAYER)
     # GAME_BOARD.set_el(2, 2, PLAYER)
     # print PLAYER
+    levels_file = 'questions.txt'
+    levels = open(levels_file, 'r')
+    open_level = ast.literal_eval(levels.read())
+    
 
-    run_level()
+    # This pulls a dictionary from the questions.txt file
+
+    # >> ERICA LOOK HERE. Can you call curr_ans a global?
+    questions = open_level["level1"]
+    current_question = random.choice(questions.keys())
+    current_answer = questions[current_question]
+
+
+    run_level(current_question)
+
+
+
 # for level in levels():
 #     run_level(level)
+
+
+
+# for i in string.ascii_uppercase:
+#     print '    if KEYBOARD[key.'+i+']:'
+#     print '        GAME_BOARD.draw_msg("'+i.lower()+'")'
+#     print '        answer = answer + "'+i.lower()+'"'

@@ -84,7 +84,7 @@ class Board(object):
         for y in range(height):
             self.content_layer.append(list(row))
 
-        self.message = pyglet.text.Label(text = "", x=10, y=SCREEN_Y-30)
+        self.message = pyglet.text.Label(text = "", x=10, y=SCREEN_Y-30, font_size=18, multiline=True, width=250)
         self.bg_sprites = []
 
         for y in range(height):
@@ -97,12 +97,15 @@ class Board(object):
                 self.bg_sprites.append(sprite)
 
     def draw_msg(self, message):
-        self.message.text = message
-        pass
+        self.message.text = self.message.text + message
+    
+    def backspace(self):
+        self.message.text = self.message.text.rstrip(self.message.text[-1])
+        print self.message.text
 
     def erase_msg(self):
         self.message.text = ""
-        pass
+        
 
     def draw_bg(self, sprite, x_pos, y_pos):
         # x_pos and y_pos in board coordinates
